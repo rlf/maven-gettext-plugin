@@ -189,9 +189,12 @@ public class ReportMojo extends AbstractMojo {
     private String getTranslator(File file) {
         try (BufferedReader rdr = new BufferedReader(new FileReader(file))) {
             String line = null;
+            boolean headerFound = false;
             while ((line = rdr.readLine()) != null) {
-                if (line.startsWith("#, ")) { // only search the header
+                if ((line.isEmpty() || line.startsWith("msgid")) && headerFound) { // only search the header
                     return null;
+                } else if (line.startsWith("msgid") && !headerFound) {
+                    headerFound = true;
                 }
                 Matcher m = TRANSLATOR_PATTERN.matcher(line);
                 if (m.matches()) {

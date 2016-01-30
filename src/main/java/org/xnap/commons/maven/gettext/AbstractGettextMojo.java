@@ -54,5 +54,10 @@ public abstract class AbstractGettextMojo
      * @required
      */
     protected String keysFile;
-    
+
+    /**
+     * Extra arguments for the cmd-line
+     * @parameter expression="${extraArgs}"
+     */
+    protected String[] extraArgs;
 }

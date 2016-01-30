@@ -16,8 +16,6 @@ package org.xnap.commons.maven.gettext;
  * limitations under the License.
  */
 
-import java.io.File;
-
 import org.apache.maven.plugin.MojoExecutionException;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.cli.CommandLineException;
@@ -25,28 +23,30 @@ import org.codehaus.plexus.util.cli.CommandLineUtils;
 import org.codehaus.plexus.util.cli.Commandline;
 import org.codehaus.plexus.util.cli.StreamConsumer;
 
+import java.io.File;
+
 /**
- * Invokes the gettext:gettext goal and invokes msgmerge to update po files.
+ * Invokes the gettext:gettext goal and invokes msgattrib to update po files.
  *
- * @goal merge
+ * @goal attrib
  * @execute goal="gettext"
  * @phase generate-resources
  * @author Tammo van Lessen
  */
-public class MergeMojo
+public class AttribMojo
     extends AbstractGettextMojo {
 	
     /**
-     * The msgmerge command.
-     * @parameter expression="${msgmergeCmd}" default-value="msgmerge"
+     * The msgattrib command.
+     * @parameter expression="${msgattribCmd}" default-value="msgattrib"
      * @required 
      */
-    protected String msgmergeCmd;
+    protected String msgattribCmd;
     
     public void execute()
         throws MojoExecutionException
     {
-		getLog().info("Invoking msgmerge for po files in '" 
+		getLog().info("Invoking msgattrib for po files in '"
 				+ poDirectory.getAbsolutePath() + "'.");
 		
 		DirectoryScanner ds = new DirectoryScanner();
@@ -57,15 +57,13 @@ public class MergeMojo
     	for (int i = 0; i < files.length; i++) {
     		getLog().info("Processing " + files[i]);
     		Commandline cl = new Commandline();
-    		cl.setExecutable(msgmergeCmd);
+    		cl.setExecutable(msgattribCmd);
 			for (String arg : extraArgs) {
 				cl.createArgument().setValue(arg);
 			}
-        	cl.createArgument().setValue("-q");
-        	cl.createArgument().setValue("--backup=numbered");
-        	cl.createArgument().setValue("-U");
+			cl.createArgument().setValue("-o");
         	cl.createArgument().setFile(new File(poDirectory, files[i]));
-        	cl.createArgument().setValue(new File(poDirectory, keysFile).getAbsolutePath());
+        	cl.createArgument().setFile(new File(poDirectory, files[i]));
         	
         	getLog().debug("Executing: " + cl.toString());
     		StreamConsumer out = new LoggerStreamConsumer(getLog(), LoggerStreamConsumer.INFO);
@@ -73,7 +71,7 @@ public class MergeMojo
         	try {
     			CommandLineUtils.executeCommandLine(cl, out, err);
     		} catch (CommandLineException e) {
-    			getLog().error("Could not execute " + msgmergeCmd + ".", e);
+    			getLog().error("Could not execute " + msgattribCmd + ".", e);
     		}
     	}
     }

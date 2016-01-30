@@ -111,6 +111,9 @@ public class DistMojo
     		}
     		
         	Commandline cl = cf.createCommandline(inputFile);
+			for (String arg : extraArgs) {
+				cl.createArgument().setValue(arg);
+			}
     		getLog().debug("Executing: " + cl.toString());
     		StreamConsumer out = new LoggerStreamConsumer(getLog(), LoggerStreamConsumer.INFO);
     		StreamConsumer err = new LoggerStreamConsumer(getLog(), LoggerStreamConsumer.WARN);

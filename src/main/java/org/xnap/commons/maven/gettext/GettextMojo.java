@@ -90,6 +90,9 @@ public class GettextMojo
 		
 		Commandline cl = new Commandline();
 		cl.setExecutable(xgettextCmd);
+        for (String arg : extraArgs) {
+            cl.createArgument().setValue(arg);
+        }
     	cl.createArgument().setValue("--from-code=" + encoding);
     	cl.createArgument().setValue("--output=" + new File(poDirectory, keysFile).getAbsolutePath());
     	cl.createArgument().setValue("--language=Java");

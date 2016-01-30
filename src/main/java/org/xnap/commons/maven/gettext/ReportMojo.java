@@ -87,6 +87,16 @@ public class ReportMojo extends AbstractMojo {
      */
     protected String msgfmtCmd;
 
+    /**
+     * @parameter property="includes"
+     */
+    protected String[] includes;
+
+    /**
+     * @parameter property="excludes"
+     */
+    protected String[] excludes;
+
     protected PrintStream out;
 
     public void execute() throws MojoExecutionException {
@@ -148,7 +158,14 @@ public class ReportMojo extends AbstractMojo {
 
         DirectoryScanner ds = new DirectoryScanner();
         ds.setBasedir(poDirectory);
-        ds.setIncludes(new String[]{"**/*.po"});
+        if (includes != null && includes.length > 0) {
+            ds.setIncludes(includes);
+        } else {
+            ds.setIncludes(new String[]{"**/*.po"});
+        }
+        if (excludes != null && excludes.length > 0) {
+            ds.setExcludes(excludes);
+        }
         ds.scan();
 
         Stats stats = new Stats();

@@ -51,7 +51,14 @@ public class MergeMojo
 		
 		DirectoryScanner ds = new DirectoryScanner();
     	ds.setBasedir(poDirectory);
-    	ds.setIncludes(new String[] {"**/*.po"});
+		if (includes != null && includes.length > 0) {
+			ds.setIncludes(includes);
+		} else {
+			ds.setIncludes(new String[]{"**/*.po"});
+		}
+		if (excludes != null && excludes.length > 0) {
+			ds.setExcludes(excludes);
+		}
     	ds.scan();
     	String[] files = ds.getIncludedFiles();
     	for (int i = 0; i < files.length; i++) {

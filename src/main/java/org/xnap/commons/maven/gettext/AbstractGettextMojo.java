@@ -57,7 +57,17 @@ public abstract class AbstractGettextMojo
 
     /**
      * Extra arguments for the cmd-line
-     * @parameter expression="${extraArgs}"
+     * @parameter property="extraArgs"
      */
     protected String[] extraArgs;
+
+    /**
+     * @parameter property="includes"
+     */
+    protected String[] includes;
+
+    /**
+     * @parameter property="excludes"
+     */
+    protected String[] excludes;
 }

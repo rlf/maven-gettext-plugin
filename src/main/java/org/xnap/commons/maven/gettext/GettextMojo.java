@@ -101,7 +101,14 @@ public class GettextMojo
     	
     	DirectoryScanner ds = new DirectoryScanner();
     	ds.setBasedir(sourceDirectory);
-    	ds.setIncludes(new String[] {"**/*.java"});
+        if (includes != null && includes.length > 0) {
+            ds.setIncludes(includes);
+        } else {
+            ds.setIncludes(new String[]{"**/*.java"});
+        }
+        if (excludes != null && excludes.length > 0) {
+            ds.setExcludes(excludes);
+        }
     	ds.scan();
         String[] files = ds.getIncludedFiles();
         List fileNameList = Collections.emptyList();

@@ -29,7 +29,6 @@ import org.codehaus.plexus.util.cli.StreamConsumer;
  * Invokes the gettext:gettext goal and invokes msgmerge to update po files.
  *
  * @goal merge
- * @execute goal="gettext"
  * @phase generate-resources
  * @author Tammo van Lessen
  */

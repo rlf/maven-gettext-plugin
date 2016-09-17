@@ -29,7 +29,6 @@ import java.io.File;
  * Invokes the gettext:gettext goal and invokes msgattrib to update po files.
  *
  * @goal attrib
- * @execute goal="gettext"
  * @phase generate-resources
  * @author Tammo van Lessen
  */

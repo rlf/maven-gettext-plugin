@@ -130,10 +130,17 @@ public class ReportMojo extends AbstractMojo {
         List<StatsEntry> items = stats.getItems();
         Collections.sort(items);
         for (StatsEntry item : items) {
-            out.println(String.format(rowString, item.getLocale().getDisplayName(), item.getLocale(),
+            Locale locale = item.getLocale();
+            out.println(String.format(rowString, getShortDisplayName(locale), locale,
                     item.getTranslated() * 100f / item.getTotal(), item.getTranslated(), item.getUntranslated(),
                     item.getFuzzy(), item.getTranslator()));
         }
+    }
+
+    private String getShortDisplayName(Locale locale) {
+        return locale.getDisplayName()
+                .replaceAll("United Kingdom", "UK")
+                .replaceAll("United States", "US");
     }
 
     public String getDescription() {
@@ -305,8 +312,8 @@ public class ReportMojo extends AbstractMojo {
         }
 
         public int compareTo(Object o) {
-            return getLocale().getDisplayName().compareTo(
-                    ((StatsEntry) o).getLocale().getDisplayName());
+            return getShortDisplayName(getLocale()).compareTo(
+                    getShortDisplayName(((StatsEntry) o).getLocale()));
         }
 
         public Locale getLocale() {
